@@ -15,6 +15,7 @@
     "@metaplex-foundation/umi-bundle-defaults": "^0.8.9",
     "@metaplex-foundation/umi-signer-wallet-adapters": "^0.8.9",
     "@metaplex-foundation/umi-storage-mock": "^0.8.9",
+    "@metaplex-foundation/umi-uploader-bundlr": "^0.8.9",
     "@metaplex-foundation/umi-web3js-adapters": "^0.8.9",
     "@solana/spl-token": "^0.3.8",
     "@solana/wallet-adapter-base": "^0.9.23",

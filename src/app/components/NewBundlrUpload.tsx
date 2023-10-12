@@ -1,11 +1,10 @@
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
-
 import { createGenericFile, Signer } from "@metaplex-foundation/umi";
 import { clusterApiUrl } from "@solana/web3.js";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
-//import { createBundlrUploader } from "@metaplex-foundation/umi-uploader-bundlr";
+import { createBundlrUploader } from "@metaplex-foundation/umi-uploader-bundlr";
 // bundlr is being depricated now it is Irys
 import { sign } from "crypto";
 import * as UmiWeb3Adapters from "@metaplex-foundation/umi-web3js-adapters";
@@ -31,7 +30,7 @@ const NewBundlrUpload = ({ blob }: BundlrUploadProps) => {
     //UPDATE TO UMI FRAMEWORK
     const umi = createUmi("https://api.devnet.solana.com");
     // setting up the mockStorage for testing
-    umi.use(mockStorage());
+    // umi.use(mockStorage());
 
     const arrayBuffer: ArrayBuffer = await blob.arrayBuffer();
     const uint8Array: Uint8Array = new Uint8Array(arrayBuffer);
@@ -78,22 +77,27 @@ const NewBundlrUpload = ({ blob }: BundlrUploadProps) => {
       payer: signer,
     };
 
-    //const bundlerUploadTest = createBundlrUploader(umi, bundlerUploaderOptions);
+    const bundlrUploadTest = createBundlrUploader(umi, bundlerUploaderOptions);
 
-    const [myUri] = await umi.uploader.upload([genericFile]);
+    const [myUri] = await bundlrUploadTest.upload([genericFile]);
 
     console.log(myUri);
 
     const [myDownloadedFile] = await umi.downloader.download([myUri]);
 
     console.log(myDownloadedFile);
+
+    // const [myUri] = await umi.uploader.upload([genericFile]);
+    // console.log(myUri);
+    // const [myDownloadedFile] = await umi.downloader.download([myUri]);
+    // console.log(myDownloadedFile);
   };
 
   return (
     <div>
       <button
         onClick={uploadFile}
-        className="mx-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+        className="m-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       >
         Upload Image
       </button>
