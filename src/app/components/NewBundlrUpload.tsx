@@ -1,10 +1,17 @@
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
-import { createGenericFile, Signer } from "@metaplex-foundation/umi";
+import {
+  createGenericFile,
+  Signer,
+  signerIdentity,
+} from "@metaplex-foundation/umi";
 import { clusterApiUrl } from "@solana/web3.js";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 
-import { createBundlrUploader } from "@metaplex-foundation/umi-uploader-bundlr";
+import {
+  createBundlrUploader,
+  bundlrUploader,
+} from "@metaplex-foundation/umi-uploader-bundlr";
 // bundlr is being depricated now it is Irys
 import { sign } from "crypto";
 import * as UmiWeb3Adapters from "@metaplex-foundation/umi-web3js-adapters";
@@ -15,14 +22,28 @@ import {
   createSignerFromWalletAdapter,
 } from "@metaplex-foundation/umi-signer-wallet-adapters";
 
+import { percentAmount, generateSigner } from "@metaplex-foundation/umi";
+import {
+  createNft,
+  createV1,
+  TokenStandard,
+} from "@metaplex-foundation/mpl-token-metadata";
+
 // mockStorage is for testing
 import { mockStorage } from "@metaplex-foundation/umi-storage-mock";
+import { unpackMultisig } from "@solana/spl-token";
+import { text } from "stream/consumers";
 
 interface BundlrUploadProps {
   blob: Blob;
+  textObject: {
+    customer: string;
+    vendor: string;
+    description: string;
+  };
 }
 
-const NewBundlrUpload = ({ blob }: BundlrUploadProps) => {
+const NewBundlrUpload = ({ blob, textObject }: BundlrUploadProps) => {
   //const { connection } = useConnection();
   const wallet = useWallet();
   const uploadFile = async () => {
@@ -35,13 +56,21 @@ const NewBundlrUpload = ({ blob }: BundlrUploadProps) => {
     const arrayBuffer: ArrayBuffer = await blob.arrayBuffer();
     const uint8Array: Uint8Array = new Uint8Array(arrayBuffer);
 
-    const genericFile = createGenericFile(uint8Array, "testImage.jpg", {
-      displayName: "My Test Image",
-      uniqueName: "my-test-image",
-      contentType: "image/jpeg",
-      extension: ".jpg",
-      tags: [{ name: "name", value: "value" }],
-    });
+    const genericFile = createGenericFile(
+      uint8Array,
+      `Leet-Receipt--${textObject.vendor}-${textObject.customer}.jpg`,
+      {
+        displayName: "My Test Image",
+        uniqueName: "my-test-image",
+        contentType: "image/jpeg",
+        extension: ".jpg",
+        tags: [
+          { name: "customer", value: textObject.customer },
+          { name: "vendor", value: textObject.vendor },
+          { name: "description", value: textObject.description },
+        ],
+      }
+    );
 
     // Devnet Bundlr address
     const BUNDLR_ADDRESS = "https://devnet.bundlr.network";
@@ -69,6 +98,8 @@ const NewBundlrUpload = ({ blob }: BundlrUploadProps) => {
     };
     const signer: Signer = createSignerFromWalletAdapter(umiWallet);
 
+    umi.use(signerIdentity(signer));
+
     const bundlerUploaderOptions = {
       address: BUNDLR_ADDRESS,
       timeout: 60000, //number for timeout
@@ -77,20 +108,78 @@ const NewBundlrUpload = ({ blob }: BundlrUploadProps) => {
       payer: signer,
     };
 
-    const bundlrUploadTest = createBundlrUploader(umi, bundlerUploaderOptions);
+    //switching from createBundlrUploader to bundlerUploader via umi
 
-    const [myUri] = await bundlrUploadTest.upload([genericFile]);
+    umi.use(bundlrUploader(bundlerUploaderOptions));
 
-    console.log(myUri);
+    //const bundlrUploadTest = createBundlrUploader(umi, bundlerUploaderOptions);
 
-    const [myDownloadedFile] = await umi.downloader.download([myUri]);
+    const [imageUri] = await umi.uploader.upload([genericFile]);
 
-    console.log(myDownloadedFile);
+    console.log(imageUri);
+
+    const jsonUri = await umi.uploader.uploadJson({
+      name: `Leet-Receipt--${textObject.vendor}-${textObject.customer}.jpg`,
+      description: "Leet Receipts",
+      image: imageUri,
+      attributes: [
+        {
+          trait_type: "Vendor",
+          value: textObject.vendor,
+        },
+        {
+          trait_type: "Customer",
+          value: textObject.customer,
+        },
+        {
+          trait_type: "Description",
+          value: textObject.description,
+        },
+      ],
+      properties: {
+        files: [
+          {
+            uri: imageUri,
+            type: "image/jpeg",
+          },
+        ],
+      },
+    });
+
+    //const [myUri] = await bundlrUploadTest.upload([genericFile]);
+
+    console.log(jsonUri);
+
+    // const [myDownloadedFile] = await umi.downloader.download([myUri]);
+
+    // console.log(myDownloadedFile);
 
     // const [myUri] = await umi.uploader.upload([genericFile]);
     // console.log(myUri);
     // const [myDownloadedFile] = await umi.downloader.download([myUri]);
     // console.log(myDownloadedFile);
+
+    const mint = generateSigner(umi);
+
+    // await createV1(umi, {
+    //   mint,
+    //   authority: signer,
+    //   name: `Leet-Receipt--${textObject.vendor}-${textObject.customer}.jpg`,
+    //   uri: myUri,
+    //   sellerFeeBasisPoints: percentAmount(0),
+    //   decimals: 0,
+
+    //   tokenStandard: TokenStandard.NonFungible,
+    // }).sendAndConfirm(umi);
+
+    const nftResponse = await createNft(umi, {
+      mint,
+      name: `Leet-Receipt--${textObject.vendor}-${textObject.customer}.jpg`,
+      uri: jsonUri,
+      sellerFeeBasisPoints: percentAmount(0),
+    }).sendAndConfirm(umi);
+
+    console.log(nftResponse);
   };
 
   return (
