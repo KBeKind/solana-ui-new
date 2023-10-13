@@ -79,7 +79,11 @@ const Home = () => {
       <div className="bg-slate-500 p-8">
         {imageSet && <img src={image} width="700" height="500"></img>}
       </div>
-      <div>{imageSet && blob && <NewBundlrUpload blob={blob} />}</div>
+      <div>
+        {imageSet && blob && (
+          <NewBundlrUpload blob={blob} textObject={textObject} />
+        )}
+      </div>
     </div>
   );
 };
