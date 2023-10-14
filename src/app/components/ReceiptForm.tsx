@@ -23,13 +23,13 @@ const ReceiptForm = ({
 
   return (
     <div className="m-4 p-4">
-      ReceiptForm
+      <h2 className="m-3 text-4xl text-green-400">Receipt Form</h2>
       <form
         onSubmit={handleSubmit}
-        className="m-4 p-4 bg-green-500 text-slate-800"
+        className="m-4 p-4 border-solid border-2 border-green-400"
       >
         <input
-          className="m-4"
+          className="m-4 p-2 bg-transparent border-solid border-2 border-green-400"
           type="text"
           placeholder="customer name..."
           value={customer}
@@ -37,7 +37,7 @@ const ReceiptForm = ({
           onChange={(e) => setCustomer(e.target.value)}
         />
         <input
-          className="m-4"
+          className="m-4 p-2 bg-transparent border-solid border-2 border-green-400"
           type="text"
           placeholder="vendor name..."
           value={vendor}
@@ -46,7 +46,7 @@ const ReceiptForm = ({
         />
         <br />
         <textarea
-          className="m-4 w-96 h-36"
+          className="m-4 p-2 w-96 h-36 bg-transparent border-solid border-2 border-green-400"
           placeholder="description..."
           maxLength={250}
           value={description}
@@ -55,10 +55,10 @@ const ReceiptForm = ({
         />
         <br />
         <button
-          className="mx-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="mx-2 py-2 px-4 transition ease-in-out delay-250 bg-transparent hover:!bg-gradient-to-b from-transparent to-green-800 hover:scale-110 duration-300 text-white font-bold border-solid border-2 border-green-400"
           type="submit"
         >
-          Create Receipt NFT
+          Initialize Receipt
         </button>
       </form>
     </div>

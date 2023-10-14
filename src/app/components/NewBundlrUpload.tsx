@@ -1,8 +1,11 @@
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import {
   createGenericFile,
+  Instruction,
   Signer,
   signerIdentity,
+  transactionBuilder,
+  WrappedInstruction,
 } from "@metaplex-foundation/umi";
 import { clusterApiUrl } from "@solana/web3.js";
 
@@ -28,6 +31,8 @@ import {
   createV1,
   TokenStandard,
 } from "@metaplex-foundation/mpl-token-metadata";
+
+import { mplCandyMachine } from "@metaplex-foundation/mpl-candy-machine";
 
 // mockStorage is for testing
 import { mockStorage } from "@metaplex-foundation/umi-storage-mock";
@@ -60,8 +65,8 @@ const NewBundlrUpload = ({ blob, textObject }: BundlrUploadProps) => {
       uint8Array,
       `Leet-Receipt--${textObject.vendor}-${textObject.customer}.jpg`,
       {
-        displayName: "My Test Image",
-        uniqueName: "my-test-image",
+        displayName: "LR-Image",
+        uniqueName: "LR-Image",
         contentType: "image/jpeg",
         extension: ".jpg",
         tags: [
@@ -112,6 +117,11 @@ const NewBundlrUpload = ({ blob, textObject }: BundlrUploadProps) => {
 
     umi.use(bundlrUploader(bundlerUploaderOptions));
 
+    const collectionUpdateAuthority = generateSigner(umi);
+    const collectionMint = generateSigner(umi);
+
+    umi.use(mplCandyMachine());
+
     //const bundlrUploadTest = createBundlrUploader(umi, bundlerUploaderOptions);
 
     const [imageUri] = await umi.uploader.upload([genericFile]);
@@ -119,7 +129,7 @@ const NewBundlrUpload = ({ blob, textObject }: BundlrUploadProps) => {
     console.log(imageUri);
 
     const jsonUri = await umi.uploader.uploadJson({
-      name: `Leet-Receipt--${textObject.vendor}-${textObject.customer}.jpg`,
+      name: `Leet-Receipt--${textObject.vendor}`,
       description: "Leet Receipts",
       image: imageUri,
       attributes: [
@@ -161,24 +171,25 @@ const NewBundlrUpload = ({ blob, textObject }: BundlrUploadProps) => {
 
     const mint = generateSigner(umi);
 
-    // await createV1(umi, {
+    // const nftResponse = await createV1(umi, {
     //   mint,
     //   authority: signer,
     //   name: `Leet-Receipt--${textObject.vendor}-${textObject.customer}.jpg`,
-    //   uri: myUri,
+    //   uri: jsonUri,
     //   sellerFeeBasisPoints: percentAmount(0),
     //   decimals: 0,
-
-    //   tokenStandard: TokenStandard.NonFungible,
+    //   tokenStandard: 0,
+    //   // the above had this but it should equate to 0 so im testing it with 0: TokenStandard.NonFungible,
     // }).sendAndConfirm(umi);
 
     const nftResponse = await createNft(umi, {
-      mint,
-      name: `Leet-Receipt--${textObject.vendor}-${textObject.customer}.jpg`,
+      mint: collectionMint,
+      authority: collectionUpdateAuthority,
+      name: `Leet-Receipt-${textObject.vendor}`,
       uri: jsonUri,
       sellerFeeBasisPoints: percentAmount(0),
+      isCollection: true,
     }).sendAndConfirm(umi);
-
     console.log(nftResponse);
   };
 

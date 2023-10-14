@@ -1,5 +1,6 @@
 "use client";
 
+import { updateArgs } from "@metaplex-foundation/mpl-token-metadata";
 import { useEffect, useState } from "react";
 import { useRef } from "react";
 
@@ -29,16 +30,40 @@ const ReceiptCanvas = ({
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     // const delta = count % 500;
     context.fillStyle = "white";
-    context.font = "30px Arial";
+    context.font = "25px Arial";
     context.fillRect(0, 0, rest.width, rest.height);
     context.fillStyle = "black";
-    context.fillText(`Customer: ${aTextObject.customer}`, 10 /*+ delta*/, 50);
-    context.fillText(`Vendor: ${aTextObject.vendor}`, 10 /*+ delta*/, 100);
-    context.fillText(
-      `Description: ${aTextObject.description}`,
-      10 /*+ delta*/,
-      150
-    );
+    context.fillText(`Vendor: ${aTextObject.vendor}`, 15 /*+ delta*/, 50);
+    context.fillText(`Customer: ${aTextObject.customer}`, 15 /*+ delta*/, 100);
+    context.fillText(`Description:`, 15 /*+ delta*/, 150);
+
+    //let lines: String[] = [];
+    let current_line = "";
+    let totalLineNumber = 1;
+    let splitDescription = aTextObject.description.split(" ");
+
+    for (let i = 0; i < splitDescription.length; i++) {
+      if (current_line.length + 1 + splitDescription[i].length > 30) {
+        context.fillText(
+          `${current_line}`,
+          40 /*+ delta*/,
+          150 + totalLineNumber * 50
+        );
+        totalLineNumber++;
+        current_line = splitDescription[i];
+      } else {
+        current_line += " " + splitDescription[i];
+      }
+    }
+    if (current_line) {
+      context.fillText(
+        `${current_line}`,
+        40 /*+ delta*/,
+        150 + totalLineNumber * 50
+      );
+      // lines.push(current_line);
+    }
+    //context.fillText(`${aTextObject.description}`, 40 /*+ delta*/, 200);
   };
 
   useEffect(() => {

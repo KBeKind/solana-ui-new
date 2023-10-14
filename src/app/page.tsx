@@ -5,8 +5,6 @@ import ReceiptCanvas from "@/app/components/ReceiptCanvas";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-//import ReceiptImageUploadForm from "@/components/ReceiptImageUploadForm";
-//import ClientUpload from "@/components/ClientUpload";
 import NewBundlrUpload from "./components/NewBundlrUpload";
 
 import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
@@ -15,6 +13,8 @@ import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
 //   WalletMultiButton,
 // } from "@solana/wallet-adapter-react-ui";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import WelcomeHeader from "./components/WelcomeHeader";
+import ReceiptMetaData from "./components/ReceiptMetaData";
 
 //testing this import with dynamic to see what happens because it is in the Next.js wallet adapter sample on solana labs
 const WalletDisconnectButtonDynamic = dynamic(
@@ -43,22 +43,18 @@ const Home = () => {
   // passing two callback functions into RecieptForm
   return (
     <div>
-      <Link
+      <WelcomeHeader></WelcomeHeader>
+      {/* <Link
         className="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         href="/mintTokenTest"
       >
         Mint Token Test Page
-      </Link>
-      <hr className="m-5" />
+      </Link> */}
       <br />
-      <div className="mx-5">
+      <div className="mx-5 border-solid border-2 border-green-400">
         <WalletMultiButtonDynamic />
         <WalletDisconnectButtonDynamic />
-        <br />
-        <hr />
-        <br />
       </div>
-      page
       <ReceiptForm
         setFormSubmitted={setFormSubmitted}
         setTextObject={setTextObject}
@@ -70,14 +66,15 @@ const Home = () => {
             setImage={setImage}
             setImageSet={setImageSet}
             setBlob={setBlob}
-            width="700"
-            height="500"
+            width="500"
+            height="600"
           />
         )}
       </div>
       <br />
-      <div className="bg-slate-500 p-8">
-        {imageSet && <img src={image} width="700" height="500"></img>}
+      <div> {imageSet && <ReceiptMetaData textObject={textObject} />}</div>
+      <div className="p-4 mx-8">
+        {imageSet && <img src={image} width="500" height="600"></img>}
       </div>
       <div>
         {imageSet && blob && (
