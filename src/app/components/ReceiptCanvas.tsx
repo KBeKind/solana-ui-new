@@ -33,6 +33,37 @@ const ReceiptCanvas = ({
     context.font = "25px Arial";
     context.fillRect(0, 0, rest.width, rest.height);
     context.fillStyle = "black";
+
+    // Create a new path.
+    context.beginPath();
+    context.moveTo(0, 0);
+    let xLine = 0;
+    for (let i = 0; i < 17; i++) {
+      context.lineTo(xLine, 0);
+      xLine += 10;
+      context.lineTo(xLine, 10);
+      xLine += 10;
+      context.lineTo(xLine, 0);
+      xLine += 10;
+    }
+    context.closePath();
+    context.fill();
+
+    // Create a new path.
+    context.beginPath();
+    context.moveTo(0, 600);
+    xLine = 0;
+    for (let i = 0; i < 17; i++) {
+      context.lineTo(xLine, 600);
+      xLine += 10;
+      context.lineTo(xLine, 590);
+      xLine += 10;
+      context.lineTo(xLine, 600);
+      xLine += 10;
+    }
+    context.closePath();
+    context.fill();
+
     context.fillText(`Vendor: ${aTextObject.vendor}`, 15 /*+ delta*/, 50);
     context.fillText(`Customer: ${aTextObject.customer}`, 15 /*+ delta*/, 100);
     context.fillText(`Description:`, 15 /*+ delta*/, 150);
