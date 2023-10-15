@@ -15,6 +15,7 @@ import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import WelcomeHeader from "./components/WelcomeHeader";
 import ReceiptMetaData from "./components/ReceiptMetaData";
+import ImageAndUpload from "./components/ImageAndUpload";
 
 //testing this import with dynamic to see what happens because it is in the Next.js wallet adapter sample on solana labs
 const WalletDisconnectButtonDynamic = dynamic(
@@ -72,7 +73,16 @@ const Home = () => {
         )}
       </div>
       <br />
-      <div> {imageSet && <ReceiptMetaData textObject={textObject} />}</div>
+
+      {imageSet && blob && image && (
+        <ImageAndUpload
+          imageSet={imageSet}
+          textObject={textObject}
+          image={image}
+          blob={blob}
+        />
+      )}
+      {/* <div> {imageSet && <ReceiptMetaData textObject={textObject} />}</div>
       <div className="p-4 mx-8">
         {imageSet && <img src={image} width="500" height="600"></img>}
       </div>
@@ -80,7 +90,7 @@ const Home = () => {
         {imageSet && blob && (
           <NewBundlrUpload blob={blob} textObject={textObject} />
         )}
-      </div>
+      </div> */}
     </div>
   );
 };
