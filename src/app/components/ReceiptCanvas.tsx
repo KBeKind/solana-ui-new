@@ -1,7 +1,6 @@
 "use client";
 
-import { updateArgs } from "@metaplex-foundation/mpl-token-metadata";
-import { useEffect, useState } from "react";
+import { LegacyRef, useEffect, useState } from "react";
 import { useRef } from "react";
 
 interface CanvasOGProps {
@@ -14,8 +13,8 @@ interface CanvasOGProps {
   setImage: Function;
   setImageSet: Function;
   setBlob: Function;
-  width: String;
-  height: String;
+  width: string;
+  height: string;
 }
 
 interface textObjectInterface {
@@ -32,7 +31,7 @@ const ReceiptCanvas = ({
   setBlob,
   ...rest
 }: CanvasOGProps) => {
-  const ref = useRef();
+  const ref = useRef<HTMLCanvasElement>(null);
 
   const draw = (
     aTextObject: textObjectInterface,
@@ -110,32 +109,36 @@ const ReceiptCanvas = ({
   };
 
   useEffect(() => {
-    const theCanvas = ref.current;
+    if (ref.current) {
+      const theCanvas = ref.current;
 
-    const context = theCanvas.getContext("2d");
-    draw(textObject, context);
+      const context = theCanvas.getContext("2d");
+      draw(textObject, context);
 
-    // const base64StringDataUrl = theCanvas.toDataURL("image/jpeg", 0.5);
+      // const base64StringDataUrl = theCanvas.toDataURL("image/jpeg", 0.5);
 
-    // localStorage.setItem("image", base64StringDataUrl);
+      // localStorage.setItem("image", base64StringDataUrl);
 
-    theCanvas.toBlob(
-      (blob: any) => {
-        const newImage = document.createElement("img");
-        const url = URL.createObjectURL(blob);
-        setBlob(blob);
-        setImage(url);
-      },
-      "image/jpeg",
-      0.95
-    ); // converting to jpeg at 95% quality
-    setImageSet(true);
+      theCanvas.toBlob(
+        (blob: any) => {
+          const newImage = document.createElement("img");
+          const url = URL.createObjectURL(blob);
+          setBlob(blob);
+          setImage(url);
+        },
+        "image/jpeg",
+        0.95
+      ); // converting to jpeg at 95% quality
+      setImageSet(true);
 
-    // setImage(base64StringDataUrl);
-    // setImageSet(true);
+      // setImage(base64StringDataUrl);
+      // setImageSet(true);
+    }
   }, [textObject]);
 
-  return <canvas className="" ref={ref} {...rest} />;
+  return (
+    <canvas className="" ref={ref as LegacyRef<HTMLCanvasElement>} {...rest} />
+  );
 };
 
 export default ReceiptCanvas;
