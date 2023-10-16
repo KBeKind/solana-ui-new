@@ -57,33 +57,34 @@ const Home = () => {
         <WalletMultiButtonDynamic />
         <WalletDisconnectButtonDynamic />
       </div>
-      <ReceiptForm
-        setFormSubmitted={setFormSubmitted}
-        setTextObject={setTextObject}
-      />
-      <div className="hidden">
-        {formSubmitted && (
-          <ReceiptCanvas
+      <div className="lg:flex">
+        <ReceiptForm
+          setFormSubmitted={setFormSubmitted}
+          setTextObject={setTextObject}
+        />
+        <div className="hidden">
+          {formSubmitted && (
+            <ReceiptCanvas
+              textObject={textObject}
+              setImage={setImage}
+              setImageSet={setImageSet}
+              setBlob={setBlob}
+              width="500"
+              height="600"
+            />
+          )}
+        </div>
+        <br />
+
+        {imageSet && blob && image && (
+          <ImageAndUpload
+            imageSet={imageSet}
             textObject={textObject}
-            setImage={setImage}
-            setImageSet={setImageSet}
-            setBlob={setBlob}
-            width="500"
-            height="600"
+            image={image}
+            blob={blob}
           />
         )}
-      </div>
-      <br />
-
-      {imageSet && blob && image && (
-        <ImageAndUpload
-          imageSet={imageSet}
-          textObject={textObject}
-          image={image}
-          blob={blob}
-        />
-      )}
-      {/* <div> {imageSet && <ReceiptMetaData textObject={textObject} />}</div>
+        {/* <div> {imageSet && <ReceiptMetaData textObject={textObject} />}</div>
       <div className="p-4 mx-8">
         {imageSet && <img src={image} width="500" height="600"></img>}
       </div>
@@ -92,6 +93,7 @@ const Home = () => {
           <NewBundlrUpload blob={blob} textObject={textObject} />
         )}
       </div> */}
+      </div>{" "}
     </div>
   );
 };

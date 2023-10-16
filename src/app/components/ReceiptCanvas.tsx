@@ -74,6 +74,20 @@ const ReceiptCanvas = ({
     context.closePath();
     context.fill();
 
+    context.lineWidth = 4;
+
+    // Draw a line
+    context.beginPath();
+    context.moveTo(0, 0);
+    context.lineTo(0, 600);
+    context.stroke();
+
+    // Draw a line
+    context.beginPath();
+    context.moveTo(500, 0);
+    context.lineTo(500, 600);
+    context.stroke();
+
     context.fillText(`Vendor: ${aTextObject.vendor}`, 15 /*+ delta*/, 50);
     context.fillText(`Customer: ${aTextObject.customer}`, 15 /*+ delta*/, 100);
     context.fillText(`Total: ${aTextObject.total}`, 15, 150);
