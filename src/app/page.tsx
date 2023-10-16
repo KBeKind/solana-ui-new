@@ -34,6 +34,7 @@ const Home = () => {
   const [textObject, setTextObject] = useState({
     customer: "",
     vendor: "",
+    total: "",
     description: "",
   });
   const [imageSet, setImageSet] = useState(false);

@@ -44,6 +44,7 @@ interface BundlrUploadProps {
   textObject: {
     customer: string;
     vendor: string;
+    total: string;
     description: string;
   };
 }
@@ -72,6 +73,7 @@ const NewBundlrUpload = ({ blob, textObject }: BundlrUploadProps) => {
         tags: [
           { name: "customer", value: textObject.customer },
           { name: "vendor", value: textObject.vendor },
+          { name: "total", value: textObject.total },
           { name: "description", value: textObject.description },
         ],
       }
@@ -140,6 +142,10 @@ const NewBundlrUpload = ({ blob, textObject }: BundlrUploadProps) => {
         {
           trait_type: "Customer",
           value: textObject.customer,
+        },
+        {
+          trait_type: "Total",
+          value: textObject.total,
         },
         {
           trait_type: "Description",

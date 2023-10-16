@@ -14,16 +14,19 @@ const ReceiptForm = ({
   const [customer, setCustomer] = useState("");
   const [vendor, setVendor] = useState("");
   const [description, setDescription] = useState("");
+  const [total, setTotal] = useState("");
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setFormSubmitted(true);
-    setTextObject({ customer, vendor, description });
+    setTextObject({ customer, vendor, total, description });
   };
-
+  // 23 char long for customer
+  // 26 char long for vendor?
   return (
     <div className="m-4 p-4">
       <h2 className="m-3 text-4xl text-green-400">Receipt Form</h2>
+
       <form
         onSubmit={handleSubmit}
         className="m-4 p-4 border-solid border-2 border-green-400"
@@ -43,6 +46,15 @@ const ReceiptForm = ({
           value={vendor}
           // as the user types it sets the query state variable
           onChange={(e) => setVendor(e.target.value)}
+        />
+        <br />
+        <input
+          className="m-4 p-2 bg-transparent border-solid border-2 border-green-400"
+          type="text"
+          placeholder="total..."
+          value={total}
+          // as the user types it sets the query state variable
+          onChange={(e) => setTotal(e.target.value)}
         />
         <br />
         <textarea

@@ -8,6 +8,7 @@ interface CanvasOGProps {
   textObject: {
     customer: string;
     vendor: string;
+    total: string;
     description: string;
   };
   setImage: Function;
@@ -66,7 +67,8 @@ const ReceiptCanvas = ({
 
     context.fillText(`Vendor: ${aTextObject.vendor}`, 15 /*+ delta*/, 50);
     context.fillText(`Customer: ${aTextObject.customer}`, 15 /*+ delta*/, 100);
-    context.fillText(`Description:`, 15 /*+ delta*/, 150);
+    context.fillText(`Total: ${aTextObject.total}`, 15, 150);
+    context.fillText(`Description:`, 15 /*+ delta*/, 200);
 
     //let lines: String[] = [];
     let current_line = "";
@@ -78,7 +80,7 @@ const ReceiptCanvas = ({
         context.fillText(
           `${current_line}`,
           40 /*+ delta*/,
-          150 + totalLineNumber * 50
+          200 + totalLineNumber * 50
         );
         totalLineNumber++;
         current_line = splitDescription[i];
@@ -90,7 +92,7 @@ const ReceiptCanvas = ({
       context.fillText(
         `${current_line}`,
         40 /*+ delta*/,
-        150 + totalLineNumber * 50
+        200 + totalLineNumber * 50
       );
       // lines.push(current_line);
     }
