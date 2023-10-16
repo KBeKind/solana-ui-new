@@ -45,34 +45,38 @@ const Home = () => {
   // passing two callback functions into RecieptForm
   return (
     <div>
-      <WelcomeHeader></WelcomeHeader>
-      {/* <Link
+      <div className="lg:flex">
+        <div>
+          <div className="mx-16">
+            <WelcomeHeader></WelcomeHeader>
+          </div>
+          {/* <Link
         className="m-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
         href="/mintTokenTest"
       >
         Mint Token Test Page
       </Link> */}
-      <br />
-      <div className="mx-5 border-solid border-2 border-green-400">
-        <WalletMultiButtonDynamic />
-        <WalletDisconnectButtonDynamic />
-      </div>
-      <div className="lg:flex">
-        <ReceiptForm
-          setFormSubmitted={setFormSubmitted}
-          setTextObject={setTextObject}
-        />
-        <div className="hidden">
-          {formSubmitted && (
-            <ReceiptCanvas
-              textObject={textObject}
-              setImage={setImage}
-              setImageSet={setImageSet}
-              setBlob={setBlob}
-              width="500"
-              height="600"
-            />
-          )}
+          <br />
+          <div className="mx-20 border-solid border-2 border-green-400 w-80">
+            <WalletMultiButtonDynamic />
+            <WalletDisconnectButtonDynamic />
+          </div>
+          <ReceiptForm
+            setFormSubmitted={setFormSubmitted}
+            setTextObject={setTextObject}
+          />
+          <div className="hidden">
+            {formSubmitted && (
+              <ReceiptCanvas
+                textObject={textObject}
+                setImage={setImage}
+                setImageSet={setImageSet}
+                setBlob={setBlob}
+                width="500"
+                height="600"
+              />
+            )}
+          </div>
         </div>
         <br />
 
