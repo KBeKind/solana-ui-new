@@ -18,6 +18,13 @@ interface CanvasOGProps {
   height: String;
 }
 
+interface textObjectInterface {
+  customer: string;
+  vendor: string;
+  total: string;
+  description: string;
+}
+
 const ReceiptCanvas = ({
   textObject,
   setImage,
@@ -27,7 +34,10 @@ const ReceiptCanvas = ({
 }: CanvasOGProps) => {
   const ref = useRef();
 
-  const draw = (aTextObject, context /*,count: number*/) => {
+  const draw = (
+    aTextObject: textObjectInterface,
+    context: any /*,count: number*/
+  ) => {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     // const delta = count % 500;
     context.fillStyle = "white";
