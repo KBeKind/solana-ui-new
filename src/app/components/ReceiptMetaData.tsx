@@ -4,6 +4,7 @@ interface ReceiptMetaDataProps {
   textObject: {
     customer: string;
     vendor: string;
+    total: string;
     description: string;
   };
 }
@@ -23,6 +24,9 @@ const ReceiptMetaData = ({ textObject }: ReceiptMetaDataProps) => {
           <ul className="ms-8">
             <li>vendor: ${textObject.vendor} </li>
             <li>customer: ${textObject.customer} </li>
+            {textObject.total.length > 0 && (
+              <li>total: ${textObject.customer} </li>
+            )}
             <li>description: ${textObject.description} </li>
           </ul>
         </li>
