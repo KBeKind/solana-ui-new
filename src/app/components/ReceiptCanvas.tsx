@@ -94,42 +94,35 @@ const ReceiptCanvas = ({
     context.fillText(`Total: ${aTextObject.total}`, 15, 150);
     context.fillText(`Description:`, 15, 200);
 
-    let current_line = "";
+    let currentLine = "";
     let totalLineNumber = 1;
     let splitDescription = aTextObject.description.split(" ");
     let longerThan30 = false;
+    let alreadyPrinted = true;
 
     for (let i = 0; i < splitDescription.length; i++) {
-      console.log("splitDescription[i].length: " + splitDescription[i].length);
-      console.log("totalLineNumber: " + totalLineNumber);
       if (splitDescription[i].length > 30) {
         const word = splitDescription[i];
         const firstString = word.slice(0, 31);
         context.fillText(`${firstString}`, 40, 200 + totalLineNumber * 50);
         totalLineNumber++;
-        console.log(word.slice(0, 31));
-        console.log(word.slice(31));
-        splitDescription[i] = word.slice(31);
-        i--;
-        longerThan30 = true;
+        splitDescription.splice(i + 1, 0, word.slice(31));
       } else {
-        if (current_line.length + 1 + splitDescription[i].length > 30) {
-          context.fillText(`${current_line}`, 40, 200 + totalLineNumber * 50);
+        if (currentLine.length + 1 + splitDescription[i].length > 30) {
+          context.fillText(`${currentLine}`, 40, 200 + totalLineNumber * 50);
           totalLineNumber++;
-          current_line = splitDescription[i];
+          alreadyPrinted = true;
+          currentLine = splitDescription[i];
         } else {
-          current_line += " " + splitDescription[i];
+          currentLine += " " + splitDescription[i];
         }
+        if (currentLine && !alreadyPrinted) {
+          context.fillText(`${currentLine}`, 40, 200 + totalLineNumber * 50);
+          totalLineNumber++;
+          currentLine = "";
+        }
+        alreadyPrinted = false;
       }
-      console.log("totalLineNumber at End of loop: " + totalLineNumber);
-    }
-    if (current_line) {
-      context.fillText(
-        `${current_line}`,
-        40 /*+ delta*/,
-        200 + totalLineNumber * 50
-      );
-      // lines.push(current_line);
     }
     //context.fillText(`${aTextObject.description}`, 40 /*+ delta*/, 200);
   };
