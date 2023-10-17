@@ -49,7 +49,7 @@ const ReceiptForm = ({
         />
         <br />
         <input
-          className="m-4 p-2 bg-transparent border-solid border-2 border-green-400"
+          className="m-4 p-2 w-40 sm:w-48 bg-transparent border-solid border-2 border-green-400"
           type="text"
           placeholder="total..."
           value={total}
@@ -60,7 +60,7 @@ const ReceiptForm = ({
         <textarea
           className="m-4 p-2 w-80 sm:w-96 h-36 bg-transparent border-solid border-2 border-green-400"
           placeholder="description..."
-          maxLength={250}
+          maxLength={200}
           value={description}
           // as the user types it sets the query state variable
           onChange={(e) => setDescription(e.target.value)}
