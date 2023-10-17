@@ -25,42 +25,47 @@ const ReceiptForm = ({
   // 26 char long for vendor?
   return (
     <div className="m-4 p-4">
-      <h2 className="m-3 text-4xl text-green-400">Receipt Form</h2>
+      <h2 className="m-3 text-4xl text-green-400 object-contain">
+        Receipt Form
+      </h2>
 
       <form
         onSubmit={handleSubmit}
-        className="m-4 p-4 border-solid border-2 border-green-400"
+        className="m-4 p-4 border-solid border-2 border-green-400 "
       >
         <input
-          className="m-4 p-2 bg-transparent border-solid border-2 border-green-400"
+          className="m-4 p-2 w-48 sm:w-64 bg-transparent border-solid border-2 border-green-400"
           type="text"
           placeholder="customer name..."
+          maxLength={20}
           value={customer}
           // as the user types it sets the query state variable
           onChange={(e) => setCustomer(e.target.value)}
         />
         <input
-          className="m-4 p-2 bg-transparent border-solid border-2 border-green-400"
+          className="m-4 p-2 w-48 sm:w-64 bg-transparent border-solid border-2 border-green-400"
           type="text"
           placeholder="vendor name..."
+          maxLength={20}
           value={vendor}
           // as the user types it sets the query state variable
           onChange={(e) => setVendor(e.target.value)}
         />
         <br />
         <input
-          className="m-4 p-2 w-40 sm:w-48 bg-transparent border-solid border-2 border-green-400"
+          className="m-4 p-2 w-48 sm:w-64 bg-transparent border-solid border-2 border-green-400"
           type="text"
           placeholder="total..."
+          maxLength={10}
           value={total}
           // as the user types it sets the query state variable
           onChange={(e) => setTotal(e.target.value)}
         />
         <br />
         <textarea
-          className="m-4 p-2 w-80 sm:w-96 h-36 bg-transparent border-solid border-2 border-green-400"
+          className="m-4 p-2 w-64 sm:w-96 h-28 bg-transparent border-solid border-2 border-green-400"
           placeholder="description..."
-          maxLength={200}
+          maxLength={100}
           value={description}
           // as the user types it sets the query state variable
           onChange={(e) => setDescription(e.target.value)}
