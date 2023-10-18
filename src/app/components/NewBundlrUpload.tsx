@@ -206,7 +206,7 @@ const NewBundlrUpload = ({ blob, textObject }: BundlrUploadProps) => {
         className=" py-2 px-4 transition ease-in-out delay-250 bg-transparent hover:!bg-gradient-to-b from-transparent to-green-800 hover:scale-110 duration-300 text-white font-bold border-solid border-2 border-green-400"
         type="submit"
       >
-        Upload Image
+        Create NFT Receipt!
       </button>
     </div>
   );

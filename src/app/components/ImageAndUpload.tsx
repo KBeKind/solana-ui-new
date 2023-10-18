@@ -12,6 +12,8 @@ interface ImageAndUploadProps {
     description: string;
   };
   blob: Blob;
+  receiptWidth: number;
+  receiptHeight: number;
 }
 
 const ImageAndUpload = ({
@@ -19,13 +21,20 @@ const ImageAndUpload = ({
   image,
   textObject,
   blob,
+  receiptWidth,
+  receiptHeight,
 }: ImageAndUploadProps) => {
   return (
     <div>
       <div> {imageSet && <ReceiptMetaData textObject={textObject} />}</div>
       <div className="mx-5 p-5 border-solid border-2 border-green-400">
         {imageSet && (
-          <Image src={image} alt="Leet Receipt" width="500" height="600" />
+          <Image
+            src={image}
+            alt="Leet Receipt"
+            width={receiptWidth}
+            height={receiptHeight}
+          />
         )}
         {imageSet && blob && (
           <NewBundlrUpload blob={blob} textObject={textObject} />

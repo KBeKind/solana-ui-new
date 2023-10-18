@@ -63,7 +63,7 @@ const ReceiptForm = ({
         />
         <br />
         <textarea
-          className="m-4 p-2 w-64 sm:w-96 h-28 bg-transparent border-solid border-2 border-green-400"
+          className="m-4 p-2 w-56 sm:w-96 h-28 bg-transparent border-solid border-2 border-green-400"
           placeholder="description..."
           maxLength={100}
           value={description}
