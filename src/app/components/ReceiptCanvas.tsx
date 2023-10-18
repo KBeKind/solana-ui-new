@@ -14,8 +14,8 @@ interface CanvasOGProps {
   setImage: Function;
   setImageSet: Function;
   setBlob: Function;
-  width: string;
-  height: string;
+  width: number;
+  height: number;
 }
 
 interface textObjectInterface {
@@ -39,7 +39,6 @@ const ReceiptCanvas = ({
     context: any /*,count: number*/
   ) => {
     context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-    // const delta = count % 500;
     context.fillStyle = "white";
     context.font = "25px Arial";
     context.fillRect(0, 0, rest.width, rest.height);
@@ -65,11 +64,11 @@ const ReceiptCanvas = ({
     context.moveTo(0, 600);
     xLine = 0;
     for (let i = 0; i < 17; i++) {
-      context.lineTo(xLine, 600);
+      context.lineTo(xLine, rest.height);
       xLine += 10;
-      context.lineTo(xLine, 590);
+      context.lineTo(xLine, rest.height - 10);
       xLine += 10;
-      context.lineTo(xLine, 600);
+      context.lineTo(xLine, rest.height);
       xLine += 10;
     }
     context.closePath();
@@ -80,13 +79,13 @@ const ReceiptCanvas = ({
     // Draw a line
     context.beginPath();
     context.moveTo(0, 0);
-    context.lineTo(0, 600);
+    context.lineTo(0, rest.height);
     context.stroke();
 
     // Draw a line
     context.beginPath();
-    context.moveTo(500, 0);
-    context.lineTo(500, 600);
+    context.moveTo(rest.width, 0);
+    context.lineTo(rest.width, rest.height);
     context.stroke();
 
     context.fillText(`Vendor: ${aTextObject.vendor}`, 15, 50);
@@ -94,44 +93,32 @@ const ReceiptCanvas = ({
     context.fillText(`Total: ${aTextObject.total}`, 15, 150);
     context.fillText(`Description:`, 15, 200);
 
-    let current_line = "";
-    let totalLineNumber = 1;
     let splitDescription = aTextObject.description.split(" ");
-    let longerThan30 = false;
 
     for (let i = 0; i < splitDescription.length; i++) {
-      console.log("splitDescription[i].length: " + splitDescription[i].length);
-      console.log("totalLineNumber: " + totalLineNumber);
       if (splitDescription[i].length > 30) {
         const word = splitDescription[i];
         const firstString = word.slice(0, 31);
-        context.fillText(`${firstString}`, 40, 200 + totalLineNumber * 50);
-        totalLineNumber++;
-        console.log(word.slice(0, 31));
-        console.log(word.slice(31));
-        splitDescription[i] = word.slice(31);
-        i--;
-        longerThan30 = true;
-      } else {
-        if (current_line.length + 1 + splitDescription[i].length > 30) {
-          context.fillText(`${current_line}`, 40, 200 + totalLineNumber * 50);
-          totalLineNumber++;
-          current_line = splitDescription[i];
-        } else {
-          current_line += " " + splitDescription[i];
-        }
+        splitDescription[i] = firstString;
+        splitDescription.splice(i + 1, 0, word.slice(31));
       }
-      console.log("totalLineNumber at End of loop: " + totalLineNumber);
     }
-    if (current_line) {
-      context.fillText(
-        `${current_line}`,
-        40 /*+ delta*/,
-        200 + totalLineNumber * 50
-      );
-      // lines.push(current_line);
+
+    let currentLine = "";
+    let totalLineNumber = 1;
+
+    for (let i = 0; i < splitDescription.length; i++) {
+      if (currentLine.length + 1 + splitDescription[i].length > 30) {
+        context.fillText(`${currentLine}`, 40, 200 + totalLineNumber * 50);
+        totalLineNumber++;
+        currentLine = splitDescription[i];
+      } else {
+        currentLine += " " + splitDescription[i];
+      }
     }
-    //context.fillText(`${aTextObject.description}`, 40 /*+ delta*/, 200);
+    if (currentLine) {
+      context.fillText(`${currentLine}`, 40, 200 + totalLineNumber * 50);
+    }
   };
 
   useEffect(() => {

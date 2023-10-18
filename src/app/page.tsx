@@ -41,6 +41,8 @@ const Home = () => {
   const [image, setImage] = useState();
   const [blob, setBlob] = useState();
   const [file, setFile] = useState<File>();
+  const [receiptWidth, setReceiptWidth] = useState(500);
+  const [receiptHeight, setReceiptHeight] = useState(560);
 
   // passing two callback functions into RecieptForm
   return (
@@ -73,8 +75,8 @@ const Home = () => {
                 setImage={setImage}
                 setImageSet={setImageSet}
                 setBlob={setBlob}
-                width="500"
-                height="600"
+                width={receiptWidth}
+                height={receiptHeight}
               />
             )}
           </div>
@@ -87,6 +89,8 @@ const Home = () => {
             textObject={textObject}
             image={image}
             blob={blob}
+            receiptWidth={receiptWidth}
+            receiptHeight={receiptHeight}
           />
         )}
         {/* <div> {imageSet && <ReceiptMetaData textObject={textObject} />}</div>
