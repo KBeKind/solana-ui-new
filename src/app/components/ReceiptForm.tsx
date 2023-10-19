@@ -21,6 +21,18 @@ const ReceiptForm = ({
     setFormSubmitted(true);
     setTextObject({ customer, vendor, total, description });
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const maxLength = 100;
+
+    if (e.target.value.length > maxLength) {
+      e.preventDefault();
+      return;
+    }
+
+    setDescription(e.target.value);
+  };
+
   // 23 char long for customer
   // 26 char long for vendor?
   return (
@@ -68,9 +80,8 @@ const ReceiptForm = ({
           maxLength={100}
           value={description}
           // as the user types it sets the query state variable
-          onChange={(e) => setDescription(e.target.value)}
+          onInput={handleInputChange}
         />
-        <br />
         <button
           className="mx-2 py-2 px-4 transition ease-in-out delay-250 bg-transparent hover:!bg-gradient-to-b from-transparent to-green-800 hover:scale-110 duration-300 text-white font-bold border-solid border-2 border-green-400"
           type="submit"

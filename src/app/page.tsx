@@ -59,7 +59,7 @@ const Home = () => {
         Mint Token Test Page
       </Link> */}
           <br />
-          <div className="p-2 mx-20 border-solid border-2 border-green-400 w-80">
+          <div className="p-2 mx-20 w-64 border-solid border-2 border-green-400 w-80">
             <p className="text-center text-green-400">connect your wallet</p>
             <WalletMultiButtonDynamic />
             <WalletDisconnectButtonDynamic />
