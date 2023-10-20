@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import React, { useState } from "react";
 
 interface ReceiptFormCallbackInterface {
   setFormSubmitted: Function;
@@ -22,15 +22,47 @@ const ReceiptForm = ({
     setTextObject({ customer, vendor, total, description });
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleDescriptionInputChange = (
+    e: React.ChangeEvent<HTMLTextAreaElement>
+  ) => {
     const maxLength = 100;
-
     if (e.target.value.length > maxLength) {
       e.preventDefault();
       return;
     }
-
     setDescription(e.target.value);
+  };
+
+  const handleCustomerInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const maxLength = 20;
+    if (e.target.value.length > maxLength) {
+      e.preventDefault();
+      return;
+    }
+    setCustomer(e.target.value);
+  };
+
+  const handleVendorInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const maxLength = 20;
+    if (e.target.value.length > maxLength) {
+      e.preventDefault();
+      return;
+    }
+    setVendor(e.target.value);
+  };
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    setFunction: Function,
+    maxLength: number
+  ) => {
+    if (e.target.value.length > maxLength) {
+      e.preventDefault();
+      return;
+    }
+    setFunction(e.target.value);
   };
 
   // 23 char long for customer
@@ -49,29 +81,26 @@ const ReceiptForm = ({
           className="m-4 p-2 w-48 sm:w-64 bg-transparent border-solid border-2 border-green-400"
           type="text"
           placeholder="customer name..."
-          maxLength={20}
           value={customer}
           // as the user types it sets the query state variable
-          onChange={(e) => setCustomer(e.target.value)}
+          onChange={(e) => handleInputChange(e, setCustomer, 20)}
         />
         <input
           className="m-4 p-2 w-48 sm:w-64 bg-transparent border-solid border-2 border-green-400"
           type="text"
           placeholder="vendor name..."
-          maxLength={20}
           value={vendor}
           // as the user types it sets the query state variable
-          onChange={(e) => setVendor(e.target.value)}
+          onChange={(e) => handleInputChange(e, setVendor, 20)}
         />
         <br />
         <input
           className="m-4 p-2 w-48 sm:w-64 bg-transparent border-solid border-2 border-green-400"
           type="text"
           placeholder="total..."
-          maxLength={10}
           value={total}
           // as the user types it sets the query state variable
-          onChange={(e) => setTotal(e.target.value)}
+          onChange={(e) => handleInputChange(e, setTotal, 20)}
         />
         <br />
         <textarea
@@ -80,7 +109,7 @@ const ReceiptForm = ({
           maxLength={100}
           value={description}
           // as the user types it sets the query state variable
-          onInput={handleInputChange}
+          onInput={handleDescriptionInputChange}
         />
         <button
           className="mx-2 py-2 px-4 transition ease-in-out delay-250 bg-transparent hover:!bg-gradient-to-b from-transparent to-green-800 hover:scale-110 duration-300 text-white font-bold border-solid border-2 border-green-400"
